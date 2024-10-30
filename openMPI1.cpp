@@ -1,6 +1,7 @@
 #include "mpi.h"
 #include <iostream>
 #include <vector>
+using namespace std;
 
 int main(int argc, char* argv[]) {
     MPI_Init(&argc, &argv);  // Initialize MPI
@@ -11,7 +12,7 @@ int main(int argc, char* argv[]) {
 
     // Total size of the array to sum
     const int N = 100;
-    std::vector<int> data(N);
+    vector<int> data(N);
 
     // Initialize array only on the root process
     if (world_rank == 0) {
@@ -20,7 +21,7 @@ int main(int argc, char* argv[]) {
 
     // Determine segment size for each process
     int segment_size = N / world_size;
-    std::vector<int> local_data(segment_size);
+    vector<int> local_data(segment_size);
 
     // Distribute segments of data to all processes
     MPI_Scatter(data.data(), segment_size, MPI_INT,
@@ -39,7 +40,7 @@ int main(int argc, char* argv[]) {
 
     // Display the result on the root process
     if (world_rank == 0) {
-        std::cout << "Total Sum: " << global_sum << std::endl;
+        cout << "Total Sum: " << global_sum << std::endl;
     }
 
     MPI_Finalize();  // Finalize MPI
